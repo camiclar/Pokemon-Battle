@@ -55,8 +55,6 @@ class Battle:
         Battle.__all_battles_list.append(self)
         Battle.__num_battles += 1
 
-       
-
     # Create to-string method (use this when you do print(battle_object)
     # Includes the battle's number, names, and result
     def __str__(self):
@@ -72,19 +70,69 @@ class Battle:
     def start_battle(self):
 
         # Create convenience variables for the two combatants
+        pokemon0 = self.__fighters[0]
+        pokemon1 = self.__fighters[1]
 
         # Let the user know that two pokemon have appeared and their names
+        print(pokemon0.get_name() + " has appeared.")
+        print(pokemon1.get_name() + " has appeared.")
+
         # If both pokemon are owned, say the name of each pokemon's owner and let the user know that the pokemon are battling.
+        if pokemon0.get_owner() != "None" and pokemon1.get_owner() != "None":
+            print(f"{pokemon0.get_owner()}'s and {pokemon1.get_owner()}'s pokemon are battling!")
+
         # If only one pokemon is owned let the user know that the owned pokemon was attacked by a 'wild' pokemon.
+        elif pokemon0.get_owner() != "None" and pokemon1.get_owner() == "None":
+            print(f"{pokemon0.get_owner()}'s pokemon was attacked by a wild pokemon!")
+        elif pokemon0.get_owner() == "None" and pokemon1.get_owner() != "None":
+            print(f"{pokemon1.get_owner()}'s pokemon was attacked by a wild pokemon!")
+        
         # If neither pokemon are owned say two 'wild' pokemon are battling
+        else:
+            print("Two wild pokemon are battling!")
 
         # Start the battle with round 0
-        
+        round_number = 0
+
         # Have the pokemon battle!
         # This continues as long as both pokemon have more than 0 hp    
-                   
-            # Have each pokemon randomly choose a value between 1-3 to represent their attack
+
+        while pokemon0.get_hp() > 0 and pokemon1.get_hp() > 0:
+            print("-" * 50)
+            print("Round: " + str(round_number))
+
+            print(f"{pokemon0.get_name()} ({pokemon0.get_kind()})'s HP: {pokemon0.get_hp()}")
+            print(f"{pokemon1.get_name()} ({pokemon1.get_kind()})'s HP: {pokemon1.get_hp()}")
             
+            print()
+            
+            # Have each pokemon randomly choose a value between 1-3 to represent their attack
+            pokemon1_attack = random.randint(1, 3)
+            pokemon0_attack = random.randint(1, 3)
+            
+            pokemon1.set_hp(pokemon1.get_hp() - pokemon0_attack)
+            pokemon0.set_hp(pokemon0.get_hp() - pokemon1_attack)
+            
+            print(f"{pokemon1.get_name()} ({pokemon1.get_kind()}) is attacking and did {pokemon1_attack} damage!")
+            print(f"{pokemon0.get_name()} ({pokemon0.get_kind()})'s new HP is {pokemon0.get_hp()}")
+            print()
+
+            print(f"{pokemon0.get_name()} ({pokemon0.get_kind()}) is attacking and did {pokemon0_attack} damage!")
+            print(f"{pokemon1.get_name()} ({pokemon1.get_kind()})'s new HP is {pokemon1.get_hp()}")
+
+            round_number += 1
+        
+        print("-" * 50)
+        if pokemon0.get_hp() <= 0 and pokemon1.get_hp() <= 0:
+            self.update_result(f"{pokemon0.get_name()} ({pokemon0.get_kind()}) and {pokemon1.get_name()} ({pokemon1.get_kind()}) tied")
+        elif pokemon0.get_hp() <= 0:
+            self.update_result(f"{pokemon1.get_name()} ({pokemon1.get_kind()}) has beaten {pokemon0.get_name()} ({pokemon0.get_kind()})")
+        else:
+            self.update_result(f"{pokemon0.get_name()} ({pokemon0.get_kind()}) has beaten {pokemon1.get_name()} ({pokemon1.get_kind()})")
+        
+        print(self.get_result())
+
+
             # ORIGINAL Solution
             # Both pokemon do random damage between 1-3
 
@@ -113,9 +161,6 @@ class Battle:
         # Did pokemon0 win?
         
         # Did pokemon1 win?
-
-        pass
-
                 
 
     # Getters and Setters for the Battle class
@@ -179,7 +224,9 @@ if __name__ == "__main__":
     battle1 = Battle(pokemon3, pokemon4)
     battle2 = Battle(pokemon1, pokemon3)
 
-    Battle.print_all_battles()
+    #Battle.print_all_battles()
+
+    battle0.start_battle()
 
     # END TEST CODE
 
