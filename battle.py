@@ -98,40 +98,15 @@ class Battle:
         # This continues as long as both pokemon have more than 0 hp    
 
         while pokemon0.get_hp() > 0 and pokemon1.get_hp() > 0:
+
+            # Show the Round number and the name, kind, and HP of each pokemon
             print("-" * 50)
             print("Round: " + str(round_number))
 
             print(f"{pokemon0.get_name()} ({pokemon0.get_kind()})'s HP: {pokemon0.get_hp()}")
             print(f"{pokemon1.get_name()} ({pokemon1.get_kind()})'s HP: {pokemon1.get_hp()}")
-            
             print()
             
-            # Have each pokemon randomly choose a value between 1-3 to represent their attack
-            pokemon1_attack = random.randint(1, 3)
-            pokemon0_attack = random.randint(1, 3)
-            
-            pokemon1.set_hp(pokemon1.get_hp() - pokemon0_attack)
-            pokemon0.set_hp(pokemon0.get_hp() - pokemon1_attack)
-            
-            print(f"{pokemon1.get_name()} ({pokemon1.get_kind()}) is attacking and did {pokemon1_attack} damage!")
-            print(f"{pokemon0.get_name()} ({pokemon0.get_kind()})'s new HP is {pokemon0.get_hp()}")
-            print()
-
-            print(f"{pokemon0.get_name()} ({pokemon0.get_kind()}) is attacking and did {pokemon0_attack} damage!")
-            print(f"{pokemon1.get_name()} ({pokemon1.get_kind()})'s new HP is {pokemon1.get_hp()}")
-
-            round_number += 1
-        
-        print("-" * 50)
-        if pokemon0.get_hp() <= 0 and pokemon1.get_hp() <= 0:
-            self.update_result(f"{pokemon0.get_name()} ({pokemon0.get_kind()}) and {pokemon1.get_name()} ({pokemon1.get_kind()}) tied")
-        elif pokemon0.get_hp() <= 0:
-            self.update_result(f"{pokemon1.get_name()} ({pokemon1.get_kind()}) has beaten {pokemon0.get_name()} ({pokemon0.get_kind()})")
-        else:
-            self.update_result(f"{pokemon0.get_name()} ({pokemon0.get_kind()}) has beaten {pokemon1.get_name()} ({pokemon1.get_kind()})")
-        
-        print(self.get_result())
-
 
             # ORIGINAL Solution
             # Both pokemon do random damage between 1-3
@@ -139,28 +114,53 @@ class Battle:
             # BONUS Solution
             # Try to change damage based on the type of pokemon.
             # Divide the 18 types of pokemon in 4 different groups that do different amounts of random damage
-            
-            # Show the Round number and the name, kind, and HP of each pokemon
-            
+
             # Pokemon 1 attacks first
-            # Subtract pokemon1's random value from pokemon0's hp            
+            pokemon1_attack = random.randint(1, 3)
+
+            # Subtract pokemon1's random value from pokemon0's hp   
+            pokemon0.set_hp(pokemon0.get_hp() - pokemon1_attack)
+
             # Output status of pokemon0
-                        
+            print(f"{pokemon1.get_name()} ({pokemon1.get_kind()}) is attacking and did {pokemon1_attack} damage!")
+            print(f"{pokemon0.get_name()} ({pokemon0.get_kind()})'s new HP is {pokemon0.get_hp()}")
+            print()
+
             # Pokemon0 attacks next
+            pokemon0_attack = random.randint(1, 3)
+
             # Subtract pokemon0's random value from pokemon1's hp
+            pokemon1.set_hp(pokemon1.get_hp() - pokemon0_attack)
+
             # Output status of pokemon1
-            
+            print(f"{pokemon0.get_name()} ({pokemon0.get_kind()}) is attacking and did {pokemon0_attack} damage!")
+            print(f"{pokemon1.get_name()} ({pokemon1.get_kind()})'s new HP is {pokemon1.get_hp()}")
+
             # This round is now over, return to the top of the loop
-                       
+            round_number += 1
+
+            
         # The loop is over - time to find out why!
-        # We'll return the winning pokemon or a list of both pokemon if there is a tie
-        # We'll also heal both pokemon back to their starting values
-                
+        # Heal both pokemon back to their starting values
+        pokemon0.set_hp(4)
+        pokemon1.set_hp(4)
+
+
+        print("-" * 50)
+
         # Was it a tie?
-        
-        # Did pokemon0 win?
+        if pokemon0.get_hp() <= 0 and pokemon1.get_hp() <= 0:
+            self.update_result(f"{pokemon0.get_name()} ({pokemon0.get_kind()}) and {pokemon1.get_name()} ({pokemon1.get_kind()}) tied")
         
         # Did pokemon1 win?
+        elif pokemon0.get_hp() <= 0:
+            self.update_result(f"{pokemon1.get_name()} ({pokemon1.get_kind()}) has beaten {pokemon0.get_name()} ({pokemon0.get_kind()})")
+        
+        # Did pokemon0 win?
+        else:
+            self.update_result(f"{pokemon0.get_name()} ({pokemon0.get_kind()}) has beaten {pokemon1.get_name()} ({pokemon1.get_kind()})")
+        
+        print(self.get_result())
                 
 
     # Getters and Setters for the Battle class
