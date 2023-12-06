@@ -11,35 +11,62 @@ class Battle:
     # Create two class attributes
     # 1. A list to track all battles
     # 2. An integer of the amount of battles
-
+    __all_battles_list = []
+    __num_battles = 0
 
     # A static method to print all battles
     @staticmethod
     def print_all_battles():
+        battle_list = []
+
         # Check to see if there are no battles
+        if len(Battle.__all_battles_list) == 0:
+            print("No battles to present.")
+            return 0
         
         # Create a list of the data from each battle:       
         # The battle number, and the name, owner, and kind of the two pokemon
-        
+        for battle in Battle.__all_battles_list:
+            pokemon1 = battle.get_combatant(0)
+            pokemon2 = battle.get_combatant(1)
+
+            battle_list.append((battle.get_battle_num(), pokemon1.get_name(), pokemon1.get_owner(), 
+                                pokemon1.get_kind(), pokemon2.get_name(), pokemon2.get_owner(), 
+                                pokemon2.get_kind(), battle.get_result()))
+
+
         # Table print it (headers, data, widths)
-        pass
+        table_print(("Battle #", "Pokemon1", "Owner", "Kind", "Pokemon2", "Owner", "Kind", "Result"),
+                    battle_list,
+                    (10, 10, 10, 10, 10, 10, 10, 10))
 
     # Initialize a battle object that takes in 2 pokemon objects
     def __init__(self, pokemon1, pokemon2):
         # Track both pokemon in a list
+        self.__fighters = [pokemon1, pokemon2]
         
         # Create a variable that holds the result of the battle (initially set to say battle has not happened yet) 
+        self.__battle_result = "Battle hasn't started yet."
         
         # Create a variable to get battle number (using class attribute for total amount of battles)
-        
+        self.__battle_number = self.__num_battles
+
         # Update the class attribute integer and list
-        pass
+        Battle.__all_battles_list.append(self)
+        Battle.__num_battles += 1
+
        
 
     # Create to-string method (use this when you do print(battle_object)
     # Includes the battle's number, names, and result
     def __str__(self):
-        pass
+        reply = "---Battle---\n"
+        reply += "Number: " + str(self.__battle_number) + "\n"
+        reply += "Pokemon 1 Name: " + self.__fighters[0].get_name() + "\n"
+        reply += "Pokemon 2 Name: " + self.__fighters[1].get_name() + "\n"
+        reply += "Result: " + self.__battle_result + "\n"
+
+        return reply
 
     # Starts the battle   
     def start_battle(self):
@@ -96,23 +123,24 @@ class Battle:
 
     # Update the pokemon battling
     def update_pokemon(self, pokemon1, pokemon2):
-        pass
+        self.__fighters = [pokemon1, pokemon2]
 
     # Update result of battle
     def update_result(self, result):
-        pass
+        self.__battle_result = result
 
     # Get battle result
     def get_result(self):
-        pass
+        return self.__battle_result
 
     # Get battle number
     def get_battle_num(self):
-        pass
+        return self.__battle_number
 
     # Get one of the pokemon objects
     def get_combatant(self, number):
-        pass
+        if number >= 0 and number < 2:
+            return self.__fighters[number]
    
 # This function is used to print all of the people in our system
 def print_people_list(person_list):
@@ -141,8 +169,22 @@ person_list = create_default()
 # Create a user menu
 # Make sure you work through the user menu and complete all the missing code
 if __name__ == "__main__":
-    
-    while True:
+    # BEGIN TEST CODE
+    pokemon1 = Pokemon("John", "Dog", "Fire")
+    pokemon2 = Pokemon("Susan", "Cat", "Water")
+    pokemon3 = Pokemon("Sam", "Rodent", "Grass")
+    pokemon4 = Pokemon("Mary", "Llama", "Fairy")
+
+    battle0 = Battle(pokemon1, pokemon2)
+    battle1 = Battle(pokemon3, pokemon4)
+    battle2 = Battle(pokemon1, pokemon3)
+
+    Battle.print_all_battles()
+
+    # END TEST CODE
+
+
+    """ while True:
         # Output a user menu with 8 Menu options
         print("\nWelcome to the Pokemon Battle Program!")
         print("Your options are:")
@@ -233,7 +275,7 @@ if __name__ == "__main__":
 
         # Error handling for bad input
         elif user_input != "":
-            print("\nPlease enter a valid menu option\n")
+            print("\nPlease enter a valid menu option\n") """
         
                     
         
