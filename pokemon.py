@@ -34,13 +34,38 @@ class Pokemon():
     # A static method to print all the non-owned pokemon
     @staticmethod
     def print_non_owned_pokemon():        
-        pass
+        pokemon_list = []
+
+        # Check to see if there are no pokemon
+        if len(Pokemon.__all_pokemon_list) == 0:
+            print("No pokemon to present.")
+            return 0
+        
+        # Create a list of the data from each pokemon: 
+        # The pokemon number, the name, kind, type, and hp
+        for pokemon in Pokemon.__all_pokemon_list:
+            if pokemon.get_owner() == "None":
+                pokemon_list.append((pokemon.get_num(), pokemon.get_name(), pokemon.get_kind(),
+                                 pokemon.get_pokemon_type(), pokemon.get_hp()))
+        
+        # Table print it (headers, data, widths)
+        table_print( ("Number", "Name", "Pokemon", "Type", "HP"),
+                     pokemon_list,
+                     (10, 10, 10, 10, 10) )
+        return 1
 
     # A static method to find a pokemon object using its number
     # Returns -1 if no pokemon is found
     @staticmethod
     def find_pokemon(number):
-        pass
+        i = 0
+
+        for pokemon in Pokemon.__all_pokemon_list:
+            if i == number:
+                return pokemon
+            i += 1
+        
+        return -1
 
 
     # Initalizing a pokemon object
@@ -154,6 +179,10 @@ def create_default():
     pokemon4 = Pokemon("Bulby", "Bulbasaur", "Grass", person = None)
     pokemon5 = Pokemon("Charmy", "Charmander", "Fire", person = None)
     pokemon6 = Pokemon("Squirty", "Squirtle", "Water", person = None)
+    pokemon7 = Pokemon("Josh", "Mr. Mime", "Psychic", person = None)
+    pokemon8 = Pokemon("Boeing", "Dreepy", "Dragon", person = None)
+    pokemon9 = Pokemon("Kiki", "Klefki", "Steel", person = None)
+    pokemon10 = Pokemon("Migrane", "Psyduck", "Water", person = None)
 
     # Instantiate 4 Additional Pokemon from https://www.pokemon.com/us/pokedex
     
