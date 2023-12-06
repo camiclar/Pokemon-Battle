@@ -214,7 +214,7 @@ person_list = create_default()
 # Create a user menu
 # Make sure you work through the user menu and complete all the missing code
 if __name__ == "__main__":
-    # BEGIN TEST CODE
+    """ # BEGIN TEST CODE
     pokemon1 = Pokemon("John", "Dog", "Fire")
     pokemon2 = Pokemon("Susan", "Cat", "Water")
     pokemon3 = Pokemon("Sam", "Rodent", "Grass")
@@ -228,10 +228,10 @@ if __name__ == "__main__":
 
     battle0.start_battle()
 
-    # END TEST CODE
+    # END TEST CODE """
 
 
-    """ while True:
+    while True:
         # Output a user menu with 8 Menu options
         print("\nWelcome to the Pokemon Battle Program!")
         print("Your options are:")
@@ -246,30 +246,32 @@ if __name__ == "__main__":
             kind = input("What is the pokemon's kind? ")
             pokemon_type = input("What is the pokemon's type? ")
             #Add a pokemon with the above attributes
+            Pokemon(name, kind, pokemon_type)
             
 
         # See all pokemon
         elif user_input == "2":
             print("\nSee all Pokemon\n")
-            #print all pokemon
+            Pokemon.print_all_pokemon()
 
         # Add a person
         elif user_input == "3":
             print("\nAdd a Person\n")
 
             # Get person's name/email
-            
+            name = input("What is the person's name? ")
+            email = input("What is the person's email? ")
 
             # Create person object and add to person list
-            
+            person_list.append(Person(name, email))
 
             # Let user know person has been added
-            
+            print("Added " + name)
 
         # See all people
         elif user_input == "4":
             print("\nSee all People\n")
-            #print all the people
+            print_people_list(person_list)
 
             
         #Adopt a pokemon
@@ -322,7 +324,7 @@ if __name__ == "__main__":
 
         # Error handling for bad input
         elif user_input != "":
-            print("\nPlease enter a valid menu option\n") """
+            print("\nPlease enter a valid menu option\n")
         
                     
         
