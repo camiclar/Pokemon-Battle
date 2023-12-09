@@ -141,27 +141,26 @@ class Battle:
 
             
         # The loop is over - time to find out why!
-        # Heal both pokemon back to their starting values
-        pokemon0.set_hp(4)
-        pokemon1.set_hp(4)
-
-
         print("-" * 50)
 
         # Was it a tie?
         if pokemon0.get_hp() <= 0 and pokemon1.get_hp() <= 0:
-            self.update_result(f"{pokemon0.get_name()} ({pokemon0.get_kind()}) and {pokemon1.get_name()} ({pokemon1.get_kind()}) tied")
+            print(f"{pokemon0.get_name()} ({pokemon0.get_kind()}) and {pokemon1.get_name()} ({pokemon1.get_kind()}) tied")
+            self.update_result("There has been a tie!")
         
         # Did pokemon1 win?
         elif pokemon0.get_hp() <= 0:
-            self.update_result(f"{pokemon1.get_name()} ({pokemon1.get_kind()}) has beaten {pokemon0.get_name()} ({pokemon0.get_kind()})")
+            print(f"{pokemon1.get_name()} ({pokemon1.get_kind()}) has beaten {pokemon0.get_name()} ({pokemon0.get_kind()})")
+            self.update_result(f"{pokemon1.get_name()} has won")
         
         # Did pokemon0 win?
         else:
-            self.update_result(f"{pokemon0.get_name()} ({pokemon0.get_kind()}) has beaten {pokemon1.get_name()} ({pokemon1.get_kind()})")
+            print(f"{pokemon0.get_name()} ({pokemon0.get_kind()}) has beaten {pokemon1.get_name()} ({pokemon1.get_kind()})")
+            self.update_result(f"{pokemon0.get_name()} has won")
         
-        print(self.get_result())
-                
+        # Heal both pokemon back to their starting values
+        pokemon0.set_hp(4)
+        pokemon1.set_hp(4)
 
     # Getters and Setters for the Battle class
     # These will be very useful for print_all_battles and start_battle
@@ -214,22 +213,6 @@ person_list = create_default()
 # Create a user menu
 # Make sure you work through the user menu and complete all the missing code
 if __name__ == "__main__":
-    """ # BEGIN TEST CODE
-    pokemon1 = Pokemon("John", "Dog", "Fire")
-    pokemon2 = Pokemon("Susan", "Cat", "Water")
-    pokemon3 = Pokemon("Sam", "Rodent", "Grass")
-    pokemon4 = Pokemon("Mary", "Llama", "Fairy")
-
-    battle0 = Battle(pokemon1, pokemon2)
-    battle1 = Battle(pokemon3, pokemon4)
-    battle2 = Battle(pokemon1, pokemon3)
-
-    #Battle.print_all_battles()
-
-    battle0.start_battle()
-
-    # END TEST CODE """
-
 
     while True:
         # Output a user menu with 8 Menu options
@@ -280,42 +263,93 @@ if __name__ == "__main__":
 
             # Show the available people to adopt
             print_people_list(person_list)
-            person_num = input("Enter the number of the Person adopting: ")
-            
 
             # Is the person number valid?
-            
+            try:
+                # Get input
+                person_num = int(input("Enter the number of the Person adopting: "))
+            except:
+                print("Input must be an integer.") # Error handling
+                continue
+
+            if not (person_num >= 0 and person_num < len(person_list)): # Error handling for input outside range
+                print("No person with that number exists. Input must be between 0-" + str(len(person_list) - 1))
+                continue
 
             # Are there pokemon to be adopted?    
-            
+            Pokemon.print_non_owned_pokemon()
 
             # Is the pokemon number a number?
+            try:
+                # Get input
+                pokemon_num = int(input("Choose a pokemon's number: "))
+            except:
+                print("Input must be an integer.") # Error handling
+                continue
 
-            # Check to see if the number is valid.
-            # Check to see if the pokemon is un-owned
-            # If these are true, adopt!
+            user_pokemon = Pokemon.find_pokemon(pokemon_num)
             
-
+            # Check to see if the number is valid.
+            if user_pokemon == -1:
+                print("No pokemon with that number.")
+            
+            # Check to see if the pokemon is un-owned
+            elif user_pokemon.get_owner() != "None":
+                print("That pokemon already has an owner.")
+            
+            # If these are true, adopt!
+            else:
+                user_pokemon.adopt(person_list[person_num])
+                print(person_list[person_num].get_name() + " adopted " + user_pokemon.get_name())
 
         #Create a battle (list all pokemon, ask them to choose 2 pokemon battling)
         elif user_input == "6":
             print("\nCreate a Battle\n")
-
-            # Check to see if there are pokemon
             
+            # List all pokemon
+            Pokemon.print_all_pokemon()
 
-            # Try to get two pokemon by name and look them up, then create a Battle
+            # Get user input of first pokemon to battle
+            try:
+                pokemon1_num = int(input("Enter the number of the first pokemon: "))
+            except:
+                print("Input must be an integer.") # Error handling
+                continue
             
+            pokemon1 = Pokemon.find_pokemon(pokemon1_num) # Find pokemon
+            if pokemon1 == -1: # Error handling
+                print("No pokemon by that number exists.")
+                continue
 
+            # Get user input of second pokemon to battle
+            try:
+                pokemon2_num = int(input("Enter the number of the second pokemon: "))
+            except:
+                print("Input must be an integer.") # Error handling
+                continue
+
+            pokemon2 = Pokemon.find_pokemon(pokemon2_num) # Find pokemon
+            if pokemon2 == -1: # Error handling
+                print("No pokemon by that number exists.")
+                continue
+            
+            # Create the battle
+            battle = Battle(pokemon1, pokemon2)
+
+            print(f"Battle Number: {battle.get_battle_num()}")
+            print(pokemon1.get_name() + " vs " + pokemon2.get_name())
+            print(f"Result: {battle.get_result()}")
+            
             # When the user hits Enter, start the battle
-            input("Press Enter to Start the Battle!")
+            input("\nPress Enter to Start the Battle!")
             
+            # Start the battle
+            battle.start_battle() 
 
         # See all battles, print out battle data
         elif user_input == "7":
             print("\nSee all Battles\n")
-
-            
+            Battle.print_all_battles()
             
         # End Program
         elif user_input == "8":
@@ -325,10 +359,3 @@ if __name__ == "__main__":
         # Error handling for bad input
         elif user_input != "":
             print("\nPlease enter a valid menu option\n")
-        
-                    
-        
-       
-        
-     
-
