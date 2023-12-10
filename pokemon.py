@@ -3,9 +3,7 @@ from person import Person
 
 class Pokemon():
 
-    # Create two class attributes
-    # 1. A list to track all pokemon
-    # 2. An integer of the amount of pokemon
+    # Class attributes
     __all_pokemon_list = []
     __total_pokemon = 0
 

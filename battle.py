@@ -8,54 +8,51 @@ from data_handling import table_print
 # Battle Class
 class Battle:
 
-    # Create two class attributes
-    # 1. A list to track all battles
-    # 2. An integer of the amount of battles
+    # Class attributes
     __all_battles_list = []
     __num_battles = 0
 
     # A static method to print all battles
     @staticmethod
     def print_all_battles():
+        # List of data from each battle
         battle_list = []
 
         # Check to see if there are no battles
         if len(Battle.__all_battles_list) == 0:
             print("No battles to present.")
             return 0
-        
-        # Create a list of the data from each battle:       
-        # The battle number, and the name, owner, and kind of the two pokemon
+
+        # Loop through each battle in the list of all battles
         for battle in Battle.__all_battles_list:
+            # Get the pokemon in each battle
             pokemon1 = battle.get_combatant(0)
             pokemon2 = battle.get_combatant(1)
 
+            # To the battle list, add the battle number, the name, owner, and kind of the two pokemon, and the battle's result
             battle_list.append((battle.get_battle_num(), pokemon1.get_name(), pokemon1.get_owner(), 
                                 pokemon1.get_kind(), pokemon2.get_name(), pokemon2.get_owner(), 
                                 pokemon2.get_kind(), battle.get_result()))
 
 
-        # Table print it (headers, data, widths)
+        # Table print the list of data (headers, data, widths)
         table_print(("Battle #", "Pokemon1", "Owner", "Kind", "Pokemon2", "Owner", "Kind", "Result"),
                     battle_list,
                     (10, 10, 10, 10, 10, 10, 10, 10))
 
     # Initialize a battle object that takes in 2 pokemon objects
     def __init__(self, pokemon1, pokemon2):
-        # Track both pokemon in a list
-        self.__fighters = [pokemon1, pokemon2]
+        self.__fighters = [pokemon1, pokemon2] # Tracks both pokemon
         
-        # Create a variable that holds the result of the battle (initially set to say battle has not happened yet) 
-        self.__battle_result = "Battle hasn't started yet."
+        self.__battle_result = "Battle hasn't started yet." # Holds the result of the battle
         
-        # Create a variable to get battle number (using class attribute for total amount of battles)
-        self.__battle_number = self.__num_battles
+        self.__battle_number = self.__num_battles # Battle number
 
         # Update the class attribute integer and list
         Battle.__all_battles_list.append(self)
         Battle.__num_battles += 1
 
-    # Create to-string method (use this when you do print(battle_object)
+    # To-string method
     # Includes the battle's number, names, and result
     def __str__(self):
         reply = "---Battle---\n"
@@ -69,7 +66,7 @@ class Battle:
     # Starts the battle   
     def start_battle(self):
 
-        # Create convenience variables for the two combatants
+        # Convenience variables for the two combatants
         pokemon0 = self.__fighters[0]
         pokemon1 = self.__fighters[1]
 
@@ -96,24 +93,16 @@ class Battle:
 
         # Have the pokemon battle!
         # This continues as long as both pokemon have more than 0 hp    
-
         while pokemon0.get_hp() > 0 and pokemon1.get_hp() > 0:
 
-            # Show the Round number and the name, kind, and HP of each pokemon
+            # Show the Round number
             print("-" * 50)
             print("Round: " + str(round_number))
 
+            # Show name, kind, and HP of each pokemon
             print(f"{pokemon0.get_name()} ({pokemon0.get_kind()})'s HP: {pokemon0.get_hp()}")
             print(f"{pokemon1.get_name()} ({pokemon1.get_kind()})'s HP: {pokemon1.get_hp()}")
             print()
-            
-
-            # ORIGINAL Solution
-            # Both pokemon do random damage between 1-3
-
-            # BONUS Solution
-            # Try to change damage based on the type of pokemon.
-            # Divide the 18 types of pokemon in 4 different groups that do different amounts of random damage
 
             # Pokemon 1 attacks first
             pokemon1_attack = random.randint(1, 3)
@@ -136,34 +125,37 @@ class Battle:
             print(f"{pokemon0.get_name()} ({pokemon0.get_kind()}) is attacking and did {pokemon0_attack} damage!")
             print(f"{pokemon1.get_name()} ({pokemon1.get_kind()})'s new HP is {pokemon1.get_hp()}")
 
-            # This round is now over, return to the top of the loop
-            round_number += 1
+            # Increment round number for start of next round
+            round_number += 1 
 
             
-        # The loop is over - time to find out why!
+        # Display results from battle
         print("-" * 50)
 
-        # Was it a tie?
+        # If battle ended with both pokemon at or below 0 HP, it was a tie
         if pokemon0.get_hp() <= 0 and pokemon1.get_hp() <= 0:
+            # Display both pokemon's names and say it was a tie
             print(f"{pokemon0.get_name()} ({pokemon0.get_kind()}) and {pokemon1.get_name()} ({pokemon1.get_kind()}) tied")
-            self.update_result("There has been a tie!")
+            self.update_result("There has been a tie!") # Update result variable
         
-        # Did pokemon1 win?
+        # If pokemon0 has 0 or less HP, but pokemon1 has more than 0 HP, pokemon1 wins
         elif pokemon0.get_hp() <= 0:
+            # Display names and say pokemon1 won
             print(f"{pokemon1.get_name()} ({pokemon1.get_kind()}) has beaten {pokemon0.get_name()} ({pokemon0.get_kind()})")
-            self.update_result(f"{pokemon1.get_name()} has won")
+            self.update_result(f"{pokemon1.get_name()} has won") # Update result variable
         
-        # Did pokemon0 win?
+        # Otherwise, pokemon0 wins
         else:
+            # Display names and say pokemon 0 won
             print(f"{pokemon0.get_name()} ({pokemon0.get_kind()}) has beaten {pokemon1.get_name()} ({pokemon1.get_kind()})")
-            self.update_result(f"{pokemon0.get_name()} has won")
+            self.update_result(f"{pokemon0.get_name()} has won") # Update result variable
         
         # Heal both pokemon back to their starting values
         pokemon0.set_hp(4)
         pokemon1.set_hp(4)
 
+
     # Getters and Setters for the Battle class
-    # These will be very useful for print_all_battles and start_battle
 
     # Update the pokemon battling
     def update_pokemon(self, pokemon1, pokemon2):
@@ -211,7 +203,6 @@ def print_people_list(person_list):
 person_list = create_default()
 
 # Create a user menu
-# Make sure you work through the user menu and complete all the missing code
 if __name__ == "__main__":
 
     while True:
@@ -228,7 +219,8 @@ if __name__ == "__main__":
             name = input("What is the pokemon's name? ")
             kind = input("What is the pokemon's kind? ")
             pokemon_type = input("What is the pokemon's type? ")
-            #Add a pokemon with the above attributes
+
+            # Create a pokemon with the above attributes
             Pokemon(name, kind, pokemon_type)
             
 
@@ -264,78 +256,85 @@ if __name__ == "__main__":
             # Show the available people to adopt
             print_people_list(person_list)
 
-            # Is the person number valid?
+            # Get user input for the number of the person adopting, check that input is valid
             try:
-                # Get input
                 person_num = int(input("Enter the number of the Person adopting: "))
             except:
-                print("Input must be an integer.") # Error handling
-                continue
-
-            if not (person_num >= 0 and person_num < len(person_list)): # Error handling for input outside range
+                print("Input must be an integer.")
+                continue # If input is not an integer, return to start of while loop
+            
+            # Check if input is in range of list of people. If not, return to start of loop
+            if not (person_num >= 0 and person_num < len(person_list)):
                 print("No person with that number exists. Input must be between 0-" + str(len(person_list) - 1))
                 continue
 
-            # Are there pokemon to be adopted?    
+            # Print list of pokemon without owners
             Pokemon.print_non_owned_pokemon()
 
-            # Is the pokemon number a number?
+            # Get user input for the number of the pokemon to adopt, check if valid input
             try:
-                # Get input
                 pokemon_num = int(input("Choose a pokemon's number: "))
             except:
-                print("Input must be an integer.") # Error handling
-                continue
-
+                print("Input must be an integer.")
+                continue # If input is not an integer, return to start of loop
+            
+            # Find pokemon with user's number
             user_pokemon = Pokemon.find_pokemon(pokemon_num)
             
-            # Check to see if the number is valid.
+            # If no pokemon has that number, print error message
             if user_pokemon == -1:
                 print("No pokemon with that number.")
             
-            # Check to see if the pokemon is un-owned
+            # If that pokemon is already owned, print error message
             elif user_pokemon.get_owner() != "None":
                 print("That pokemon already has an owner.")
             
-            # If these are true, adopt!
+            # Otherwise, set chosen person to the owner of chosen pokemon and print success message
             else:
                 user_pokemon.adopt(person_list[person_num])
                 print(person_list[person_num].get_name() + " adopted " + user_pokemon.get_name())
 
-        #Create a battle (list all pokemon, ask them to choose 2 pokemon battling)
+        # Create a battle
         elif user_input == "6":
             print("\nCreate a Battle\n")
             
             # List all pokemon
             Pokemon.print_all_pokemon()
 
-            # Get user input of first pokemon to battle
+            # Get user input of first pokemon to battle, check that input is valid
             try:
                 pokemon1_num = int(input("Enter the number of the first pokemon: "))
             except:
-                print("Input must be an integer.") # Error handling
+                print("Input must be an integer.")
                 continue
             
-            pokemon1 = Pokemon.find_pokemon(pokemon1_num) # Find pokemon
-            if pokemon1 == -1: # Error handling
+            # Find pokemon with inputted integer
+            pokemon1 = Pokemon.find_pokemon(pokemon1_num)
+
+            # If no pokemon with that number exist, print error message and return to start of loop
+            if pokemon1 == -1:
                 print("No pokemon by that number exists.")
                 continue
 
-            # Get user input of second pokemon to battle
+            # Get user input of second pokemon to battle, check that input is valid
             try:
                 pokemon2_num = int(input("Enter the number of the second pokemon: "))
             except:
-                print("Input must be an integer.") # Error handling
+                print("Input must be an integer.")
                 continue
+            
+            # Find pokemon with inputted integer
+            pokemon2 = Pokemon.find_pokemon(pokemon2_num)
 
-            pokemon2 = Pokemon.find_pokemon(pokemon2_num) # Find pokemon
-            if pokemon2 == -1: # Error handling
+            # If no pokemon with that number exist, print error message and return to start of loop
+            if pokemon2 == -1:
                 print("No pokemon by that number exists.")
                 continue
             
             # Create the battle
             battle = Battle(pokemon1, pokemon2)
 
+            # Display battle number, names of pokemon battling, and initial result
             print(f"Battle Number: {battle.get_battle_num()}")
             print(pokemon1.get_name() + " vs " + pokemon2.get_name())
             print(f"Result: {battle.get_result()}")
