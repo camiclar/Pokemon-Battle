@@ -56,10 +56,10 @@ class Battle:
     # Includes the battle's number, names, and result
     def __str__(self):
         reply = "---Battle---\n"
-        reply += "Number: " + str(self.__battle_number) + "\n"
-        reply += "Pokemon 1 Name: " + self.__fighters[0].get_name() + "\n"
-        reply += "Pokemon 2 Name: " + self.__fighters[1].get_name() + "\n"
-        reply += "Result: " + self.__battle_result + "\n"
+        reply += "Number: " + str(self.get_battle_num()) + "\n"
+        reply += "Pokemon 1 Name: " + self.get_combatant(0).get_name() + "\n"
+        reply += "Pokemon 2 Name: " + self.get_combatant(1).get_name() + "\n"
+        reply += "Result: " + self.get_result() + "\n"
 
         return reply
 
@@ -67,8 +67,8 @@ class Battle:
     def start_battle(self):
 
         # Convenience variables for the two combatants
-        pokemon0 = self.__fighters[0]
-        pokemon1 = self.__fighters[1]
+        pokemon0 = self.get_combatant(0)
+        pokemon1 = self.get_combatant(1)
 
         # Let the user know that two pokemon have appeared and their names
         print(pokemon0.get_name() + " has appeared.")
